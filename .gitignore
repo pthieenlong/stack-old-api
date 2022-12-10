@@ -1,3 +1,11 @@
 node_modules
 .env
 package-lock.json
+build
+.eslintrc.js
+.prettierignore
+.prettierrc.json
+tsconfig.json
+.husky
+.gitignore
+
