@@ -5,7 +5,12 @@ import Database from './database/Database';
 
 const APP = express();
 
-APP.get('/', (req, res) => {
+APP.use(express.json());
+APP.use(express.urlencoded({ extended: true }));
+
+
+
+APP.get('/', (req: Request, res: Response) => {
 	res.send({
 		message: 'Hello world',
 	});
