@@ -16,6 +16,7 @@ module.exports = {
       'no-multi-spaces': 'error',
       'space-in-parens': 'error',
       'no-multiple-empty-lines': 'error',
-      "@typescript-eslint/ban-types": "error"
-    },
+      "@typescript-eslint/ban-types": "error",
+      '@typescript-eslint/camelcase': 'always'
+    }
   };

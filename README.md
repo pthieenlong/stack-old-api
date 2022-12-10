@@ -1,23 +1,26 @@
 # STACK API
 
 ## Installation
+
 ```bash
     npm install
 ```
 
 or
-``` bash
+
+```bash
     yarn add
 ```
 
 ## Config enviroment variables
 
-- Create .env file in the root directory
+-   Create .env file in the root directory
 
-``` bash
+```bash
 PORT = your_port
 SECRET_ACCESS_TOKEN = your_access_token
 SECRET_REFRESH_TOKEN = your_refresh_token
+DATABASE_URL = your_database_url
 ```
 
 ## Development mode
@@ -32,3 +35,14 @@ or
     yarn dev
 ```
 
+## Build mode
+
+```bash
+    npm start
+```
+
+or
+
+```bash
+    yarn start
+```
