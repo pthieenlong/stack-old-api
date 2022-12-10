@@ -1,3 +1,8 @@
 node_modules
 .env
 package-lock.json
+build
+.gitignore
+.eslintrc.js
+.prettierc
+tsconfig.json
