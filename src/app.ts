@@ -1,14 +1,19 @@
-
-require('dotenv').config();
 import express, { Request, Response } from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
+
 import Database from './database/Database';
 
 const APP = express();
 
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
-
-
+APP.use(
+	cors({
+		origin: 'localhost:8080',
+	}),
+);
 
 APP.get('/', (req: Request, res: Response) => {
 	res.send({
