@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
+
+require('dotenv').config();
 import express, { Request, Response } from 'express';
 import Database from './database/Database';
 

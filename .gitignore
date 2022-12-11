@@ -6,7 +6,6 @@ build
 .prettierignore
 .prettierrc.json
 tsconfig.json
-.husky
 .gitignore
 
 
