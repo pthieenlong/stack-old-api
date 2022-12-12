@@ -1,14 +1,14 @@
 import { Active, Role } from 'type/enum/EUser';
 
 export class User {
-	private id: string;
-	private username: string;
-	private password: string;
-	private email: string;
-	private phone: string;
-	private active: Active = Active.UNACTIVE;
-	private roles: Role[] = [Role.USER];
-	private refreshToken: string;
+	public id: string;
+	public username: string;
+	public password: string;
+	public email: string;
+	public phone: string;
+	public active: Active = Active.UNACTIVE;
+	public roles: Role[] = [Role.USER];
+	public refreshToken: string;
 
 	constructor(user: User) {
 		this.id = user.id;

@@ -1,10 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
-import { Active, Role } from 'type/enum/EUser';
-import IUser from 'type/interfaces/IUser';
+import { Active, Role } from '../../type/enum/EUser';
+import IUser from '../../type/interfaces/IUser';
 
 const userSchema = new Schema<IUser>(
 	{
-		id: {
+		_id: {
 			type: String,
 			required: true,
 		},

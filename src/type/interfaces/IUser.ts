@@ -1,7 +1,7 @@
 import { Active, Role } from 'type/enum/EUser';
 
 interface IUser {
-	id: string;
+	_id: string;
 	roles: Role[];
 	refreshToken: string;
 	username: string;

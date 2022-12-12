@@ -1,9 +1,10 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
 import Database from './database/Database';
+import mainRouter from './route/index.route';
 
 const APP = express();
 
@@ -15,11 +16,7 @@ APP.use(
 	}),
 );
 
-APP.get('/', (req: Request, res: Response) => {
-	res.send({
-		message: 'Hello world',
-	});
-});
+APP.use('/api', mainRouter);
 APP.listen(process.env.PORT, async () => {
 	if (await Database.connect()) {
 		console.log('Database connected');

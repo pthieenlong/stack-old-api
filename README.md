@@ -58,7 +58,7 @@ or
 
 # Sử dụng camelCase cho biến, hàm
 
-# Sử dụng UPPERCASE cho constant, enum
+# Sử dụng UPPERCASE cho enum
 
 # Sử dụng PascalCase cho class, interface, type, trước đuôi file sẽ thêm tiền tố chức năng (tùy 1 vài trường hợp)
 
