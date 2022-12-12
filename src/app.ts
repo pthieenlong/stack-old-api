@@ -1,15 +1,25 @@
+import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
-import express, { Request, Response } from 'express';
+
+import Database from './database/Database';
+import mainRouter from './route/index.route';
 
 const APP = express();
 
-APP.get('/', (req, res) => {
-	res.send({
-		message: 'Hello world',
-	});
-});
+APP.use(express.json());
+APP.use(express.urlencoded({ extended: true }));
+APP.use(
+	cors({
+		origin: 'localhost:8080',
+	}),
+);
 
-APP.listen(process.env.PORT, () => {
+APP.use('/api', mainRouter);
+APP.listen(process.env.PORT, async () => {
+	if (await Database.connect()) {
+		console.log('Database connected');
+	}
 	console.log(`API is running at ${process.env.PORT}`);
 });
