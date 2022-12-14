@@ -10,12 +10,4 @@ export default class Database {
 			return false;
 		}
 	}
-	public static async generateDefaultDatabase(): Promise<boolean> {
-		try {
-			return true;
-		} catch (error) {
-			console.log(`Errors: ${error}`);
-			return false;
-		}
-	}
 }
