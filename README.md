@@ -41,6 +41,11 @@ or
 ```bash
     yarn dev
 ```
+## Database
+- create Stack database in Mongose Compass
+```bash
+    npm run build-collection
+```
 
 ## Build mode
 
