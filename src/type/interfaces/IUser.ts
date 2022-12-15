@@ -9,6 +9,7 @@ interface IUser {
 	email: string;
 	phone: string;
 	active: Active;
+	token: string;
 }
 
 export default IUser;

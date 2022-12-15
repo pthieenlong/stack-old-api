@@ -37,6 +37,10 @@ const userSchema = new Schema<IUser>(
 			type: String,
 			required: true,
 		},
+		token: {
+			type: String,
+			default: '',
+		}
 	},
 	{
 		_id: false,
