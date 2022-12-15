@@ -49,7 +49,8 @@ export default class AuthRepository {
 			message: 'REGISTER_USER.FAIL',
         };
     }
-    public static async login(req: CustomRequest): Promise<Response> {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    public static async login(req: CustomRequest) {
         const { username, password } = req.body;
         if(!username || !password) return {
             code: 409,
@@ -97,7 +98,7 @@ export default class AuthRepository {
                 success: true,
                 message: 'LOGIN.SUCCESS',
                 data: {
-                    token: accessToken
+                    accessToken
                 }
             };
         };
