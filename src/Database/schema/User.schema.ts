@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { Active, Role } from '../../type/enum/EUser';
 import IUser from '../../type/interfaces/IUser';
 
-const userSchema = new Schema<IUser | object>(
+const userSchema = new Schema<IUser>(
 	{
 		_id: {
 			type: String,
