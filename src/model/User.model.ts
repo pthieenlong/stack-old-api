@@ -8,7 +8,7 @@ export class User {
 	public phone: string;
 	public active: Active = Active.UNACTIVE;
 	public roles: Role[] = [Role.USER];
-	public refreshToken: string;
+	public token: string;
 
 	constructor(user: User) {
 		this.id = user.id;
@@ -17,7 +17,7 @@ export class User {
 		this.email = user.email;
 		this.phone = user.phone;
 		this.active = user.active;
-		this.refreshToken = user.refreshToken;
+		this.token = user.token;
 		this.roles = user.roles;
 	}
 }
