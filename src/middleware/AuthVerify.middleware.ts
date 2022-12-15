@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import CustomRequest from 'type/CustomRequest';
+import CustomRequest from '../type/CustomRequest';
 export default async (req: CustomRequest, res: Response, next: NextFunction): Promise<Response | void> => {
     const authHeader = req.headers.authorization;
     if(!authHeader?.startsWith('Bearer ')) {
