@@ -3,9 +3,10 @@ import Group from '../model/Group.model';
 import GroupRepository from '../repository/Group.repository';
 import CustomRequest from '../type/CustomRequest';
 import { GroupStatus } from '../type/enum/EGroup';
-import GroupInput from '../type/input/Group.input';
+import { GroupInput, GroupUpdateInput } from '../type/input/Group.input';
 import { v4 as uuidv4 } from 'uuid';
 import { GroupRole } from '../type/enum/EUser';
+import { abs } from 'mathjs';
 export default class GroupController {
     public static async getGroupByID(req: CustomRequest, res: Response): Promise<Response | void> {
         try {
@@ -49,6 +50,28 @@ export default class GroupController {
             return res.json(newGroup);
         } catch(error) {
             console.error(error);
+        }
+    }
+    public static async updateGroupInfomations(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const groupUpdateInput = new GroupUpdateInput({...req.body});
+            const result = await GroupRepository.updateGroupInfomations(req.body.groupID, groupUpdateInput);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
+    public static async getAll(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const { limit = 10, page = 1 } = req.query;
+            const result = await GroupRepository.getAll(abs(parseInt(page as string)), abs(parseInt(limit as string)));
+
+            return res.json(result);
+        } catch(error) {
+            console.log(error);
         }
     }
 }

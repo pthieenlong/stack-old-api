@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsObject, IsString } from 'class-validator';
 import { GroupRole } from 'type/enum/EUser';
 
-export default class GroupInput {
+export class GroupInput {
     @IsString()
     @IsNotEmpty()
     name: string;
@@ -16,5 +16,22 @@ export default class GroupInput {
     constructor(groupInput: GroupInput) {
         this.name = groupInput.name;
         this.members = groupInput.members;
+    }
+}
+
+export class GroupUpdateInput {
+    @IsString()
+    name?: string;
+
+    @IsString()
+    thumbnail?: string;
+
+    @IsString()
+    avatar?: string;
+
+    constructor(groupUpdateInput: GroupUpdateInput) {
+        this.name = groupUpdateInput.name;
+        this.avatar = groupUpdateInput.avatar;
+        this.thumbnail = groupUpdateInput.thumbnail;
     }
 }

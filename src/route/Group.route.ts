@@ -5,6 +5,7 @@ import AuthVerify from '../middleware/AuthVerify.middleware';
 const router = express.Router();
 
 router.route('/')
+    .get(GroupController.getAll)
     .post(AuthVerify, GroupController.createGroup);
 router.route('/:id')
     .get(GroupController.getGroupByID);
