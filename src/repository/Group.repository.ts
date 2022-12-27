@@ -70,6 +70,7 @@ export default class GroupRepository {
         };
 		const totalPage = Math.ceil(groups.length / limit);
 		const data = groups.splice(skip, limit);
+        
         return {
             code: 200,
             success: true,

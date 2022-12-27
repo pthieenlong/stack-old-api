@@ -68,7 +68,7 @@ export default class GroupController {
         try {
             const { limit = 10, page = 1 } = req.query;
             const result = await GroupRepository.getAll(abs(parseInt(page as string)), abs(parseInt(limit as string)));
-
+            
             return res.json(result);
         } catch(error) {
             console.log(error);
