@@ -48,7 +48,6 @@ export default class GroupRepository {
 		};
 
 		const result = await group.updateOne(group.id, groupUpdateProperties);
-		console.log(result);
 		if(!result) return {
 			code: 409, 
 			success: false,
@@ -84,4 +83,35 @@ export default class GroupRepository {
 			}
 		};
 	}
+    public static async getMemberRolesByUserID(userID: string, groupID: string): Promise<Response> {
+        const groups = await GroupSchema.findOne({ _id: groupID });
+        if(!groups) return {
+            code: 204,
+            success: false,
+            message: 'GROUP.GET.FAIL'
+        };
+
+        const members = groups.members;
+        const memberRoles = members.find((member) => member._id == userID);
+        if(!memberRoles) return {
+            code: 204,
+            success: false,
+            message: 'GROUP.GET_USER_ROLES.FAIL'
+        };
+
+        return {
+            code: 200,
+            success: true,
+            message: 'GROUP.GET_USER_ROLES.SUCCESS',
+            data: memberRoles
+        };
+    }
+    public static async addMember(userID: string, groupID: string): Promise<Response> {
+        console.log(userID, groupID);
+        return {
+            code: 200,
+            success: true,
+            message: ''
+        };
+    }
 }

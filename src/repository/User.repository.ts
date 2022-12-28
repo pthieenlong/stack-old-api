@@ -7,7 +7,7 @@ export default class UserRepository {
 		if(!user) return {
 			code: 403,
 			success: false,
-			message: 'GET_USER.NOT_FOUND',
+			message: 'USER.GET.FAIL',
 		};
 		const data = {
 			username: user.username,
@@ -17,8 +17,25 @@ export default class UserRepository {
 		return {
 			code: 200,
 			success: true,
-			message: 'GET_USER.SUCCESS',
+			message: 'USER.GET.SUCCESS',
 			data,
 		}; 
 	}
+	public static async getUserRoles(userID: string):Promise<Response> {
+		const user = await UserSchema.findOne({ _id: userID });
+		if(!user) return {
+			code: 403,
+			success: false,
+			message: 'USER.GET_ROLES.FAIL',
+		};
+		const data = {
+			roles: user.roles,
+		};
+		return {
+			code: 200,
+			success: true,
+			message: 'USER.GET_ROLES.SUCCESS',
+			data
+		}; 
+    }
 }

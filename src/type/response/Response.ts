@@ -1,3 +1,5 @@
+import { ValidationError } from 'class-validator';
+
 /* eslint-disable semi */
 export interface Pagination {
 	limit: number;
@@ -11,4 +13,5 @@ export default interface Response<T = object> {
 	message: string;
 	pagination?: Pagination;
 	data?: T;
+	errors?: ValidationError[]
 }

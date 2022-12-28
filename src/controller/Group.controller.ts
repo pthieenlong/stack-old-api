@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Response } from 'express';
 import Group from '../model/Group.model';
 import GroupRepository from '../repository/Group.repository';
@@ -7,6 +8,7 @@ import { GroupInput, GroupUpdateInput } from '../type/input/Group.input';
 import { v4 as uuidv4 } from 'uuid';
 import { GroupRole } from '../type/enum/EUser';
 import { abs } from 'mathjs';
+import ValidateInput from '../helper/ValidateInput';
 export default class GroupController {
     public static async getGroupByID(req: CustomRequest, res: Response): Promise<Response | void> {
         try {
@@ -52,14 +54,14 @@ export default class GroupController {
             console.error(error);
         }
     }
-    public static async updateGroupInfomations(req: CustomRequest, res: Response): Promise<Response | void> {
+    public static async updateGroupInfomations(req: CustomRequest, res: Response) {
         try {
             const groupUpdateInput = new GroupUpdateInput({...req.body});
-            const result = await GroupRepository.updateGroupInfomations(req.body.groupID, groupUpdateInput);
-            console.log(`result: ${result}`);
-            
+            const validate = await ValidateInput(req, groupUpdateInput, 'BAD_REQUEST');
+            if(validate != undefined) 
+                return validate;
+            const result = await GroupRepository.updateGroupInfomations(req.params.id, groupUpdateInput);
             return res.json(result);
-            
         } catch(error) {
             console.error(error);
         }

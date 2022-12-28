@@ -16,7 +16,6 @@ export default async (req: CustomRequest, res: Response, next: NextFunction): Pr
             token,
             process.env.SECRET_ACCESS_TOKEN as string,
         ) as JwtPayload;
-        console.log(decoded);
         if (!decoded) return res.json({
             status: 401,
             success: false,
