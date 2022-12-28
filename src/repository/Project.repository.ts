@@ -19,7 +19,7 @@ export default class ProjectRepository{
         };
     }
 
-	public static async createProject( userID: string, projectPropteries: Project): Promise<Response> {
+	public static async createProject(projectPropteries: Project): Promise<Response> {
         const project = await ProjectSchema.create({
             ...projectPropteries,
         });

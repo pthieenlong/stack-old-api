@@ -16,7 +16,7 @@ export default class ProjectConsole {
             const result = await ProjectSchema.insertMany(projectData);
             return result ? true : false;
         } catch (error) {
-            console.error(error);
+            console.error('error:' + error);
             return false;
         }     
     }

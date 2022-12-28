@@ -1,8 +1,10 @@
-[{
-  "_id": "8dc1895a-b3de-4c2a-975d-eb1b079bb227",
-  "roles": [],
-  "email": "longpt.dev@gmail.com",
-  "username": "longpt",
-  "password": "$2b$10$fmDiV3KwlRVYW3T.i7S0JuhJDgpGU542o0.aD.tlSEaj3R8jaYBf.",
-  "phone": "0373118242"
-}]
+[
+	{
+		"_id": "8dc1895a-b3de-4c2a-975d-eb1b079bb227",
+		"roles": [],
+		"email": "longpt.dev@gmail.com",
+		"username": "longpt",
+		"password": "$2b$10$fmDiV3KwlRVYW3T.i7S0JuhJDgpGU542o0.aD.tlSEaj3R8jaYBf.",
+		"phone": "0373118242"
+	}
+]

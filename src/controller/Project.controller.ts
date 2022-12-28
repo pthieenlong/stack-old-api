@@ -25,22 +25,17 @@ export default class ProjectController {
 
 	public static async createProject(req: CustomRequest, res: Response): Promise<Response | void> {
         try {
-            if(!req.userID || !req.username) return res.json({
-                code: 400,
-                success: false,
-                message: 'PROJECT.CREATE.FAIL'
-            });
             
 			const projectProperties = { ...req.body };
             const _id =  uuidv4();
-            const project : Project = new Project({ _id , ...projectProperties , status: ProjectStatus.PENDING });
+            const project = new Project({ _id , ...projectProperties , status: ProjectStatus.PENDING });
 
             if(!project) return res.json({
                 code: 400,
                 success: false,
                 message: 'PROJECT.CREATE.FAIL'
             });
-            const newProject = await ProjectRepository.createProject(req.userID, project);
+            const newProject = await ProjectRepository.createProject(project);
 
             return res.json(newProject);
         } catch(error) {
@@ -50,7 +45,7 @@ export default class ProjectController {
 
 	public static async updateProject(req: CustomRequest, res: Response): Promise<Response | void> {
         try {
-            const projectUpdateInput = { ...req.body };
+            const projectUpdateInput = { ...req.body }; //thiếu validate nè
 			const { id } = req.params;
             const result = await ProjectRepository.updateProject(id, projectUpdateInput);
             console.log(`result: ${result}`);
