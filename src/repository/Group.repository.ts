@@ -1,6 +1,8 @@
+import { User } from '../model/User.model';
 import GroupSchema from '../database/schema/Group.schema';
 import Group from '../model/Group.model';
 import Response from '../type/response/Response';
+import { GroupRole } from 'type/enum/EUser';
 
 export default class GroupRepository {
     public static async getGroupByID(id: string): Promise<Response> {
@@ -106,12 +108,30 @@ export default class GroupRepository {
             data: memberRoles
         };
     }
-    public static async addMember(userID: string, groupID: string): Promise<Response> {
-        console.log(userID, groupID);
+    public static async addMember(groupID: string, user: Partial<User>): Promise<Response> {
+        const group = await GroupSchema.findOne({ _id: groupID });
+        if(!group) return {
+            code: 204,
+            success: false,
+            message: 'GROUP.GET.FAIL'
+        };
+        const membersID = group.members.map((member) => member._id);
+        if(membersID.includes(user.id as string))
+            return {
+                code: 400,
+                success: false,
+                message: 'GROUP.ADD_MEMBER.FAIL'
+            };
+        group.members.push({
+            _id: user.id as string,
+            name: user.username as string,
+            email: user.email as string,
+            roles: [ GroupRole.MEMBER ]
+        });
         return {
             code: 200,
             success: true,
-            message: ''
+            message: 'GROUP.ADD_MEMBER.SUCCESS'
         };
     }
 }

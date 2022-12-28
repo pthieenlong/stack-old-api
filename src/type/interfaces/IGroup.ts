@@ -9,7 +9,7 @@ export interface IGroup {
         member: {
             _id: string,
             name: string,
-            role: [ GroupRole ],
+            roles: [ GroupRole ],
             email: string
         }
     ],

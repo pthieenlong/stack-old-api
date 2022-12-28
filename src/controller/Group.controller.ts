@@ -4,7 +4,7 @@ import Group from '../model/Group.model';
 import GroupRepository from '../repository/Group.repository';
 import CustomRequest from '../type/CustomRequest';
 import { GroupStatus } from '../type/enum/EGroup';
-import { GroupInput, GroupUpdateInput } from '../type/input/Group.input';
+import { GroupAddMemberInput, GroupInput, GroupUpdateInput } from '../type/input/Group.input';
 import { v4 as uuidv4 } from 'uuid';
 import { GroupRole } from '../type/enum/EUser';
 import { abs } from 'mathjs';
@@ -59,7 +59,7 @@ export default class GroupController {
             const groupUpdateInput = new GroupUpdateInput({...req.body});
             const validate = await ValidateInput(req, groupUpdateInput, 'BAD_REQUEST');
             if(validate != undefined) 
-                return validate;
+                return res.json(validate);
             const result = await GroupRepository.updateGroupInfomations(req.params.id, groupUpdateInput);
             return res.json(result);
         } catch(error) {
@@ -74,6 +74,25 @@ export default class GroupController {
             return res.json(result);
         } catch(error) {
             console.log(error);
+        }
+    }
+    public static async addMember(req: CustomRequest, res: Response): Promise<Response | void > {
+        try {
+            const groupAddMemberInput = new GroupAddMemberInput({
+                _id: req?.body.user_id as string,
+                name: req?.body.username as string,
+                email: req?.body.email as string,
+            });
+            const validate = await ValidateInput(
+                req,
+                groupAddMemberInput,
+                'BAD_REQUEST'
+            );
+            if(validate !== null) return res.json(validate);
+            const result = await GroupRepository.addMember(req.params.id, groupAddMemberInput);
+            return res.json(result);
+        } catch(error) {
+            console.error(error);
         }
     }
 }

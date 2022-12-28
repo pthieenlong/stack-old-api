@@ -38,3 +38,21 @@ export class GroupUpdateInput {
         this.thumbnail = groupUpdateInput.thumbnail;
     }
 }
+export class GroupAddMemberInput {
+    @IsNotEmpty()
+    @IsString()
+    _id: string;
+    @IsNotEmpty()
+    @IsString()
+    name: string;
+
+    @IsOptional()
+    @IsString()
+    email?: string;
+
+    constructor(groupAddMemberInput: GroupAddMemberInput) {
+        this._id = groupAddMemberInput._id;
+        this.name = groupAddMemberInput.name;
+        this.email = groupAddMemberInput.email;
+    }
+}

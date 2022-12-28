@@ -11,4 +11,6 @@ router.route('/')
 router.route('/:id')
     .get(GroupController.getGroupByID)
     .put(AuthVerify, GroupRolesVerify([GroupRole.OWNER, GroupRole.LEADER]), GroupController.updateGroupInfomations);
+router.route('/:id/member')
+    .put(AuthVerify, GroupRolesVerify([GroupRole.OWNER, GroupRole.LEADER]), GroupController.addMember);
 export default router;
