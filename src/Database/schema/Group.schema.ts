@@ -1,73 +1,99 @@
-import mongoose, { Schema} from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
-import mongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
+import mongoose, { Schema } from 'mongoose';
+import { GroupStatus } from '../../type/enum/EGroup';
+import { IGroup } from '../../type/interfaces/IGroup';
 
-import IGroup from '../../type/interfaces/IGroup';
-import { Role } from '../../type/enum/EUser';
-import { Status as StatusProject } from '../../type/enum/EProject'; 
-import { Status } from '../../type/enum/EGroup';
-
-const GroupSchema = new Schema<IGroup>({
-    _id: { type: String, required: true },
-    groupName: { type: String, required: true },
-    users: [
+const groupSchema = new Schema<IGroup>({
+    _id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    avatar: {
+        type: String,
+        default: '',
+    },
+    thumbnail: {
+        type: String,
+        default: '',
+    },
+    members: [
         {
-            _id: { type: String, required: true },
-            username: { type: String, required: true },
-            email: { type: String, required: true },
-            role: { type: String, required: true, default: Role.USER },
-        }
-    ],
-    project: [
-        {
-            _id: { type: String, required: true },
-            groupOwner: { type: String, required: true },
-            rating: { type: Number, maxlength: 100 },
-            price: { type: Number, required: true },
-            sale: { type: Number, default: 0 },
-            savingLocale: [
-                {
-                    id: { type: String, required: true, default: uuidv4() },
-                    link: { type: String, required: true },
-                    status: { type: String, required: true },
-                }
-            ],
-            projectType: [
-                {
-                    name: { type: String, required: true },
-                }
-            ],
-            status: { type: String, required: true, default: StatusProject.SELLING },
-            thumbnail: { type: String, required: true },
-            images: [
-                {
-                    url: { type: String, required: true },
-                }
-            ],
-            description: { 
-                compatibleBrowsers: { type: String, required: true },
-                highResolution: { type: Boolean, default: true },
-                themeForestFilesIncluded: { type: String, required: true }
+            _id: {
+                type: String,
+                required: true,
             },
-            linkDemo: { type: String, required: true }  
-        } 
-    ],
-    project_type: [
-        {
-            _id: { type: String, required: true },
-            name: { type: String, required: true },
+            name: {
+                type: String,
+                required: true,
+            },
+            roles: [ {
+                type: String,
+                required: true,
+            } ],
+            email: {
+                type: String,
+            },
         }
     ],
-    status: { type: String, required: true, default: Status.CONTINUE},
-    avatar: { type: String, required: true }
-}, {
+    projects: [
+        {
+            _id: {
+                type: String,
+                required: true,
+            },
+            status: {
+                type: Boolean,
+                required: true,
+                default: true
+            },
+            main_direct: {
+                type: String,
+                required: true,
+            },
+            ratings: {
+                type: Number,
+                required: true,
+                default: 0
+            },
+            thumbnail: {
+                type: String,
+            },
+            description: {
+                type: String,
+            },
+            author: {
+                type: String,
+                required: true,
+            },
+        }
+    ],
+    project_types: [
+        {
+            _id: {
+                type: String,
+                required: true,
+            },
+            name: {
+                type: String,
+                required: true,
+            },
+            quantity: {
+                type: String,
+                required: true,
+                default: 0,
+            },
+        }
+    ],
+    status: {
+        default: GroupStatus.UNACTIVE
+    }
+},
+{
     _id: false,
     timestamps: true,
 });
 
-// Add Plugins to the Schema
-GroupSchema.plugin(mongooseDelete, { deletedAt: true, deletedBy: true, deletedByType: String });
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const model = mongoose.model<IGroup, SoftDeleteModel<IGroup>>('Group', GroupSchema);
-
-export default model;
+export default mongoose.model('Group', groupSchema);

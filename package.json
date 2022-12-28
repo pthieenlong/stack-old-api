@@ -25,6 +25,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
+    "mathjs": "^11.5.0",
     "mongoose": "^6.8.0",
     "mongoose-delete": "^0.5.4",
     "nodemailer": "^6.8.0",

@@ -1,38 +1,38 @@
 import { SoftDeleteDocument } from 'mongoose-delete';
 
-import { Status } from 'type/enum/EProject';
+import { ProjectStatus, SavingLocaleStatus } from 'type/enum/EProject';
 export type ProjectType = {
     name: string;
 }
 
-export type Description = { // it is likely to develop this case further in the future ;
-    compatibleBrowsers: string;
-    highResolution: boolean;
-    themeForestFilesIncluded: string;
-}
-
-export type Images = {
-    url: string;
-}
-
-export type SavingLocale = {
-	id: string;
-	link: string;
-	status: 'living' | 'died';
-}
-
 interface IProject extends SoftDeleteDocument {
 	_id: string;
-	groupOwner: string;
+	groupOwner: {
+		_id: string;
+		groupName: string;
+	};
 	rating : number;
 	price: number;
 	sale : number;
-	savingLocale: SavingLocale[];
-	projectType: ProjectType[];
-	status: Status;
+	savingLocale: {
+		_id: string;
+		link: string;
+		status: SavingLocaleStatus;
+	};
+	project_types: [
+		project_type : {
+			_id: string;
+			name: string;
+		}
+	];
+	status: ProjectStatus;
 	thumbnail: string;
-    images: Images[];
-    description: Description;
+    images: string[];
+    description: {
+		compatibleBrowsers: string;
+		highResolution: boolean;
+		themeForestFilesIncluded: string;
+	};
     linkDemo: string;
 }
 

@@ -7,14 +7,14 @@ const router : Router = express.Router();
 
 router.route('/')
     .get(ProjectTypeController.getAll)
-    .post(ProjectTypeController.create);
+    .post(AuthVerify, ProjectTypeController.createProjectType);
 
 router.route('/:id')
-    .get(ProjectTypeController.getOne)
-    .put(AuthVerify, UserVerify, ProjectTypeController.update)
-    .delete(ProjectTypeController.softDelete);
+    .get(ProjectTypeController.getProjectTypeByID)
+    .put(AuthVerify, UserVerify, ProjectTypeController.updateProjectType)
+    .delete(AuthVerify, UserVerify, ProjectTypeController.softDeleteProjectType);
 
-router.put('/restore/:id',AuthVerify, UserVerify, ProjectTypeController.restore);
-router.delete('/force/:id', AuthVerify, UserVerify, ProjectTypeController.forceDelete);
+router.put('/restore/:id',AuthVerify, UserVerify, ProjectTypeController.restoreProjectType);
+router.delete('/force/:id', AuthVerify, UserVerify, ProjectTypeController.forceDeleteProjectType);
 
 export default router;

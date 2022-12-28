@@ -7,3 +7,9 @@ export enum Role {
 	ADMIN = 'Admin',
 	OWNER = 'Owner',
 }
+
+export enum GroupRole {
+	LEADER = 'Leader',
+	OWNER = 'Owner',
+	MEMBER = 'Member'
+}

@@ -1,26 +1,35 @@
-import { SoftDeleteDocument } from 'mongoose-delete';
-
-import { Role } from '../enum/EUser';
-import InterfaceProject from './IProject';
-import IProjectType from './IProjectType';
-import { Status } from 'type/enum/EGroup';
-
-type User = {
-	_id: string;
-	username: string;
-	email: string;
-	role: Role;
+import { GroupStatus } from '../enum/EGroup';
+import { GroupRole } from '../enum/EUser';
+export interface IGroup {
+    _id: string,
+    name: string,
+    avatar: string,
+    thumbnail: string,
+    members: [
+        member: {
+            _id: string,
+            name: string,
+            role: [ GroupRole ],
+            email: string
+        }
+    ],
+    projects: [
+        project: {
+            _id: string,
+            status: boolean,
+            main_direct: string,
+            ratings: number,
+            thumbnail: string,
+            description: string,
+            author: string,
+        }
+    ],
+    project_types: [
+        project_type: {
+            _id: string,
+            name: string,
+            quantity: number,
+        }
+    ],
+    status: GroupStatus
 }
-
-
-interface IGroup extends SoftDeleteDocument {
-	_id: string;
-	groupName: string;
-	users: User[];
-	project: InterfaceProject[];
-	project_type: IProjectType[];
-	status: Status;
-	avatar: string;
-}
-
-export default IGroup;

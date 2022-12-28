@@ -1,105 +1,80 @@
-import CustomRequest from '../type/CustomRequest';
-import { Response, Request } from 'express';
+import { Response } from 'express';
+import { abs } from 'mathjs';
+import { v4 as uuidv4 } from 'uuid';
+
+
+import Group from '../model/Group.model';
 import GroupRepository from '../repository/Group.repository';
-import IGroup from 'type/interfaces/IGroup';
+import CustomRequest from '../type/CustomRequest';
+import { GroupStatus } from '../type/enum/EGroup';
+import { GroupInput, GroupUpdateInput } from '../type/input/Group.input';
+import { GroupRole } from '../type/enum/EUser';
 
 export default class GroupController {
-	public static async getAll(req: Request, res: Response):Promise<Response> {	
-		try {
-			const result = await GroupRepository.getAll();
-			return res.json(result);
-		} catch(error) {
-            console.log(error);
-            return res.json({
-                error
+    public static async getGroupByID(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const { id } = req.params;
+            if(!id) return res.json({
+                code: 400,
+                success: false,
+                message: 'GROUP.GET.FAIL'
             });
+            const group = await GroupRepository.getGroupByID(id);
+            res.json(group);
+        } catch(error) {
+            console.error(error);
         }
-	}
-
-	public static async getOne(req: Request, res: Response):Promise<Response> {	
-		try {
-			const id : string = req.params.id;
-			const result = await GroupRepository.getOne(id);
-			return res.json(result);
-		} catch(error) {
-            console.log(error);
-            return res.json({
-                error
+    }
+    public static async createGroup(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            if(!req.userID || !req.username) return res.json({
+                code: 400,
+                success: false,
+                message: 'GROUP.CREATE.FAIL'
             });
+            
+            const groupInput = new GroupInput({name: req.body.name, members: [
+                {
+                    _id: req.userID,
+                    name: req.username,
+                    roles: [ GroupRole.OWNER ]
+                }
+            ]});
+            const _id = uuidv4();
+            const group = new Group({_id, ...groupInput, status: GroupStatus.UNACTIVE});
+
+            if(!group) return res.json({
+                code: 400,
+                success: false,
+                message: 'GROUP.CREATE.FAIL'
+            });
+            const newGroup = await GroupRepository.createGroup(req.userID, group);
+
+            return res.json(newGroup);
+        } catch(error) {
+            console.error(error);
         }
-	}
-
-	public static async create(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.body === null) throw new Error('invalid type');
-			const payload : Required<IGroup> = { ...req.body };
-			const result = await GroupRepository.createNew(payload);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
-
-	public static async update(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.body === null) throw new Error('invalid type');
-			if (req.params === undefined) throw new Error('error no id');
-			const payload : Required<IGroup> = { ...req.body };
-			const groupId : string = req.params.id;
-			const result = await GroupRepository.update(payload, groupId);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
-
-	public static async softDelete(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const userId : string = req.userID ? req.userID : 'custom id user';
-			const result = await GroupRepository.softDelete(id, userId);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
-
-	public static async restore(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const result = await GroupRepository.restore(id);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
-
-	public static async forceDelete(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const result = await GroupRepository.forceDelete(id);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
-
+    }
+    public static async updateGroupInfomations(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const groupUpdateInput = new GroupUpdateInput({...req.body});
+            const result = await GroupRepository.updateGroupInfomations(req.body.groupID, groupUpdateInput);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
+    public static async getAll(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const { limit = 10, page = 1 } = req.query;
+            const result = await GroupRepository.getAll(abs(parseInt(page as string)), abs(parseInt(limit as string)));
+            
+            return res.json(result);
+        } catch(error) {
+            console.log(error);
+        }
+    }
 }

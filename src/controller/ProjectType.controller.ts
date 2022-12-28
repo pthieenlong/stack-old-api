@@ -1,105 +1,116 @@
+import { Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+
 import CustomRequest from '../type/CustomRequest';
-import { Response, Request } from 'express';
 import ProjectTypeRepository from '../repository/ProjectType.repository';
-import IProjectType from 'type/interfaces/IProjectType';
+import ProjectType from '../model/ProjectType.model';
+import { abs } from 'mathjs';
 
 export default class ProjectTypeController {
-	public static async getAll(req: Request, res: Response):Promise<Response> {	
-		try {
-			const result = await ProjectTypeRepository.getAll();
-			return res.json(result);
-		} catch(error) {
-            console.log(error);
-            return res.json({
-                error
+	public static async getProjectTypeByID(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const { id }  = req.params;
+            if(!id) return res.json({
+                code: 400,
+                success: false,
+                message: 'PROJECT_TYPE.GET.FAIL'
             });
+            const projectType = await ProjectTypeRepository.getProjectByID(id);
+            res.json(projectType);
+        } catch(error) {
+            console.error(error);
         }
-	}
+    }
 
-	public static async getOne(req: Request, res: Response):Promise<Response> {	
-		try {
-			const id : string = req.params.id;
-			const result = await ProjectTypeRepository.getOne(id);
-			return res.json(result);
-		} catch(error) {
-            console.log(error);
-            return res.json({
-                error
+	public static async createProjectType(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            if(!req.userID || !req.username) return res.json({
+                code: 400,
+                success: false,
+                message: 'PROJECT_TYPE.CREATE.FAIL'
             });
+            
+			const projectTypeProperties = { ...req.body };
+            const _id =  uuidv4();
+            const projectType : ProjectType = new ProjectType({ _id , ...projectTypeProperties});
+
+            if(!projectType) return res.json({
+                code: 400,
+                success: false,
+                message: 'PROJECT_TYPE.CREATE.FAIL'
+            });
+            const newProjectType = await ProjectTypeRepository.createProjectType(req.userID, projectType);
+
+            return res.json(newProjectType);
+        } catch(error) {
+            console.error(error);
         }
-	}
+    }
 
-	public static async create(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.body === null) throw new Error('invalid type');
-			const payload : Required<IProjectType> = { ...req.body };
-			const result = await ProjectTypeRepository.createNew(payload);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+	public static async updateProjectType(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const projectTypeUpdateInput = { ...req.body };
+			const { id } = req.params;
+            const result = await ProjectTypeRepository.updateProjectType(id, projectTypeUpdateInput);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async update(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.body === null) throw new Error('invalid type');
-			if (req.params === undefined) throw new Error('error no id');
-			const payload : Required<IProjectType> = { ...req.body };
-			const projectTypeId : string = req.params.id;
-			const result = await ProjectTypeRepository.update(payload, projectTypeId);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+    public static async softDeleteProjectType(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+			const { id } = req.params;
+            const userId = req.userID ? req.userID : 'temporary custom id user';
+            const result = await ProjectTypeRepository.softDeleteProject(id, userId);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async softDelete(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const userId : string = req.userID ? req.userID : 'user or admin custom id';
-			const result = await ProjectTypeRepository.softDelete(id, userId);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+    public static async restoreProjectType(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+			const { id } = req.params;
+            // const userId = req.userID ? req.userID : 'temporary custom id user';
+            const result = await ProjectTypeRepository.restoreProjectType(id);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async restore(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const result = await ProjectTypeRepository.restore(id);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+    public static async forceDeleteProjectType(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+			const { id } = req.params;
+            const result = await ProjectTypeRepository.forceDeleteProjectType(id);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async forceDelete(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const result = await ProjectTypeRepository.forceDelete(id);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+	public static async getAll(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const { limit , page } = req.query;
+            const result = await ProjectTypeRepository.getAll(abs(parseInt(page as string)), abs(parseInt(limit as string)));
+            return res.json(result);
+            
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
 }

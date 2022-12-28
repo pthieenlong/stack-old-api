@@ -1,118 +1,126 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import ProjectTypeSchema from '../database/schema/ProjectType.schema';
 import Response from '../type/response/Response';
-import IProjectType from 'type/interfaces/IProjectType';
+import ProjectType from '../model/ProjectType.model';
 
 export default class ProjectTypeRepository{
-    public static async getAll() : Promise<Response> {
-		const projectsType = await ProjectTypeSchema.find({});
-		console.log(projectsType);
-		if(!projectsType || projectsType.length === 0) return {
-			code: 403,
-			success: false,
-			message: 'GET_PROJECTSTYPE.NOT_FOUND',
-		};
-		return {
-			code: 200,
-			success: true,
-			message: 'GET_PROJECTSTYPE.SUCCESS',
-			data: projectsType,
-		}; 
-	}
+    public static async getProjectByID(id: string): Promise<Response> {
+        const project = await ProjectTypeSchema.findOne({ _id: id });
+        if(!project) return {
+            code: 204,
+            success: false,
+            message: 'PROJECT_TYPE.GET.FAIL'
+        };
+        return {
+            code: 200,
+            success: true,
+            message: 'PROJECT_TYPE.GET.SUCCESS',
+            data: project,
+        };
+    }
 
-	public static async getOne(id: string) : Promise<Response> {
-		const projectType = await ProjectTypeSchema.findOne({ _id: id });
+	public static async createProjectType( userID: string, projectTypePropteries: ProjectType): Promise<Response> {
+        const projectType = await ProjectTypeSchema.create({
+            ...projectTypePropteries,
+        });
+        if(!projectType) return {
+            code: 409,
+            success: false,
+            message: 'PROJECT_TYPE.CREATE.FAIL'
+        };
+
+        return {
+            code: 200,
+            success: true,
+            message: 'PROJECT_TYPE.CREATE.SUCCESS',
+        };
+    }
+
+	public static async updateProjectType(projectTypeId: string, projectTypeUpdateProperties: ProjectType) : Promise<Response> {
+		const projectType = await ProjectTypeSchema.updateOne({ _id: projectTypeId }, projectTypeUpdateProperties);
+		
 		if(!projectType) return {
-			code: 403,
+			code: 409,
 			success: false,
-			message: 'GET_PROJECTTYPE.NOT_FOUND',
+			message: 'PROJECT_TYPE.UPDATE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'GET_PROJECTTYPE.SUCCESS',
-			data: projectType,
-		}; 
+			message: 'PROJECT_TYPE.UPDATE.SUCCESS',
+		};
 	}
 
-	public static async createNew(payload : IProjectType) : Promise<Response> {
-		const projectTypeId = new ProjectTypeSchema({
-			_id: uuidv4()
-		}); 
-		payload['_id'] = projectTypeId._id;
-		const result = await ProjectTypeSchema.create(payload);
-		if(!result) return {
-			code: 403,
+	public static async softDeleteProject(projectTypeId: string, userId : string) : Promise<Response> {
+		const projectType = await ProjectTypeSchema.delete({ _id: projectTypeId }, userId);
+		if(!projectType) return {
+			code: 409,
 			success: false,
-			message: 'POST_PROJECTTYPE.NOT_FOUND',
+			message: 'PROJECT_TYPE.SOFT_DELETE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'POST_PROJECTTYPE.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT_TYPE.SOFT_DELETE.SUCCESS',
+		};
 	}
 
-	public static async update(payload: IProjectType, id: string) : Promise<Response> {
-		const result = await ProjectTypeSchema.updateOne({ _id: id }, payload);
-		if(!result) return {
-			code: 403,
+	public static async restoreProjectType(projectTypeId: string ) : Promise<Response> {
+		const projectType = await ProjectTypeSchema.restore({ _id: projectTypeId })
+							.updateOne({ _id: projectTypeId }, { $unset: { deletedBy: '', deletedAt: ''} });
+		if(!projectType) return {
+			code: 409,
 			success: false,
-			message: 'PUT_PROJECTTYPE.NOT_FOUND',
+			message: 'PROJECT_TYPE.RESTORE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'PUT_PROJECTTYPE.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT_TYPE.RESTORE.SUCCESS',
+		};
 	}
 
-	public static async softDelete(id: string, userId: string) : Promise<Response> {
-		const result = await ProjectTypeSchema.delete({ _id: id }, userId);
+	public static async forceDeleteProjectType(projectTypeId: string ) : Promise<Response> {
+		const result = await ProjectTypeSchema.deleteOne({ _id: projectTypeId });
 		if(!result) return {
-			code: 403,
+			code: 409,
 			success: false,
-			message: 'SOFTDELETE_PROJECTTYPE.NOT_FOUND',
+			message: 'PROJECT_TYPE.FORCE_DELETE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'SOFTDELETE_PROJECTTYPE.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT_TYPE.FORCE_DELETE.SUCCESS',
+		};
 	}
 
-	public static async restore(id: string) : Promise<Response> {
-		const result = await ProjectTypeSchema.restore({ _id: id })
-							.updateOne({ _id: id },{ $unset: { deletedBy: '', deletedAt: ''} });
-		if(!result) return {
-			code: 403,
-			success: false,
-			message: 'RESTORE_PROJECTTYPE.NOT_FOUND',
-		};
-		return {
-			code: 200,
-			success: true,
-			message: 'RESTORE_PROJECTTYPE.SUCCESS',
-			data: result,
-		}; 
-	}
+	public static async getAll(page= 1, limit = 10) : Promise<Response> {
+		const skip : number = limit * (page - 1);
+		const projectsType = await ProjectTypeSchema.find({})
+								.skip(skip)
+								.limit(limit);
+		const totalLength = await ProjectTypeSchema.countDocuments();
+		const totalPage : number = Math.ceil(totalLength / limit);
 
-	public static async forceDelete(id: string) : Promise<Response> {
-		const result = await ProjectTypeSchema.deleteOne({ _id: id });
-		if(!result) return {
-			code: 403,
+		if(!projectsType) return {
+			code: 204,
 			success: false,
-			message: 'FORCEDELETE_PROJECTTYPE.NOT_FOUND',
+			message: 'PROJECT_TYPE.GET.FAIL'
 		};
 		return {
 			code: 200,
 			success: true,
-			message: 'FORCEDELETE_PROJECTTYPE.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT_TYPE.GET.SUCCESS',
+			data: projectsType,
+			pagination: {
+				limit,
+				page,
+				totalPage,
+				totalItem: projectsType.length || 0
+			}
+		};
 	}
 }

@@ -1,106 +1,116 @@
+import { v4 as uuidv4 } from 'uuid';
+import { Response } from 'express';
+import { abs } from 'mathjs';
+
 import CustomRequest from '../type/CustomRequest';
-import { Response, Request } from 'express';
+import Project from '../model/Project.model';
 import ProjectRepository from '../repository/Project.repository';
-import IProject from 'type/interfaces/IProject';
+import { ProjectStatus } from '../type/enum/EProject';
 
 export default class ProjectController {
-	public static async getAll(req: Request, res: Response):Promise<Response> {	
-		try {
-			const result = await ProjectRepository.getAll();
-			return res.json(result);
-		} catch(error) {
-            console.log(error);
-            return res.json({
-                error
+	public static async getProjectByID(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const { id }  = req.params;
+            if(!id) return res.json({
+                code: 400,
+                success: false,
+                message: 'PROJECT.GET.FAIL'
             });
+            const project = await ProjectRepository.getProjectByID(id);
+            res.json(project);
+        } catch(error) {
+            console.error(error);
         }
-	}
+    }
 
-	public static async getOne(req: Request, res: Response):Promise<Response> {	
-		try {
-			const id : string = req.params.id;
-			const result = await ProjectRepository.getOne(id);
-			return res.json(result);
-		} catch(error) {
-            console.log(error);
-            return res.json({
-                error
+	public static async createProject(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            if(!req.userID || !req.username) return res.json({
+                code: 400,
+                success: false,
+                message: 'PROJECT.CREATE.FAIL'
             });
+            
+			const projectProperties = { ...req.body };
+            const _id =  uuidv4();
+            const project : Project = new Project({ _id , ...projectProperties , status: ProjectStatus.PENDING });
+
+            if(!project) return res.json({
+                code: 400,
+                success: false,
+                message: 'PROJECT.CREATE.FAIL'
+            });
+            const newProject = await ProjectRepository.createProject(req.userID, project);
+
+            return res.json(newProject);
+        } catch(error) {
+            console.error(error);
         }
-	}
+    }
 
-	public static async create(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.body === null) throw new Error('invalid type');
-			const payload : Required<IProject> = { ...req.body };
-			const result = await ProjectRepository.createNew(payload);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+	public static async updateProject(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const projectUpdateInput = { ...req.body };
+			const { id } = req.params;
+            const result = await ProjectRepository.updateProject(id, projectUpdateInput);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async update(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.body === null) throw new Error('invalid type');
-			if (req.params === undefined) throw new Error('error no id');
-			const payload : Required<IProject> = { ...req.body };
-			const projectId : string = req.params.id;
-			const result = await ProjectRepository.update(payload, projectId);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+    public static async softDeleteProject(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+			const { id } = req.params;
+            const userId = req.userID ? req.userID : 'temporary custom id user';
+            const result = await ProjectRepository.softDeleteProject(id, userId);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async softDelete(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const userId : string = req.userID ? req.userID : 'ewqeqwewqe';
-			console.log(userId);
-			const result = await ProjectRepository.softDelete(id, userId);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+    public static async restoreProject(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+			const { id } = req.params;
+            // const userId = req.userID ? req.userID : 'temporary custom id user';
+            const result = await ProjectRepository.restoreProject(id);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async restore(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const result = await ProjectRepository.restore(id);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
+    public static async forceDeleteProject(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+			const { id } = req.params;
+            const result = await ProjectRepository.forceDeleteProject(id);
+            console.log(`result: ${result}`);
+            
+            return res.json(result);
+            
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
-	public static async forceDelete(req: CustomRequest, res: Response) : Promise<Response> {
-		try {
-			if (req.params === undefined) throw new Error('error no id');
-			const id : string = req.params.id;
-			const result = await ProjectRepository.forceDelete(id);
-			return res.json(result);
-		} catch (error) {
-			console.log(error);
-            return res.json({
-                error
-            });
-		}
-	}
-
+	public static async getAll(req: CustomRequest, res: Response): Promise<Response | void> {
+        try {
+            const { limit , page } = req.query;
+            const result = await ProjectRepository.getAll(abs(parseInt(page as string)), abs(parseInt(limit as string)));
+            return res.json(result);
+            
+        } catch(error) {
+            console.log(error);
+        }
+    }
 }

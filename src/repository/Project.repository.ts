@@ -1,121 +1,129 @@
-import { v4 as uuidv4 } from 'uuid';
-
-import ProjectSchema from '../database/schema/Project.schema';
 import Response from '../type/response/Response';
-import IProject from 'type/interfaces/IProject';
+import ProjectSchema from '../database/schema/Project.schema';
+import Project from '../model/Project.model';
+
 
 export default class ProjectRepository{
-    public static async getAll() : Promise<Response> {
-		const projects = await ProjectSchema.find({});
-		console.log(projects);
-		if(!projects || projects.length === 0) return {
-			code: 403,
-			success: false,
-			message: 'GET_PROJECT.NOT_FOUND',
-		};
-		return {
-			code: 200,
-			success: true,
-			message: 'GET_PROJECTS.SUCCESS',
-			data: projects,
-		}; 
-	}
+    public static async getProjectByID(id: string): Promise<Response> {
+        const project = await ProjectSchema.findOne({ _id: id });
+        if(!project) return {
+            code: 204,
+            success: false,
+            message: 'PROJECT.GET.FAIL'
+        };
+        return {
+            code: 200,
+            success: true,
+            message: 'PROJECT.GET.SUCCESS',
+            data: project,
+        };
+    }
 
-	public static async getOne(id: string) : Promise<Response> {
-		const project = await ProjectSchema.findOne({ _id: id });
+	public static async createProject( userID: string, projectPropteries: Project): Promise<Response> {
+        const project = await ProjectSchema.create({
+            ...projectPropteries,
+        });
+        if(!project) return {
+            code: 409,
+            success: false,
+            message: 'PROJECT.CREATE.FAIL'
+        };
+
+        return {
+            code: 200,
+            success: true,
+            message: 'PROJECT.CREATE.SUCCESS',
+        };
+    }
+
+	public static async updateProject(projectId: string, projectUpdateProperties: Project) : Promise<Response> {
+		const project = await ProjectSchema.updateOne({ _id: projectId }, projectUpdateProperties);
+		
 		if(!project) return {
-			code: 403,
+			code: 409,
 			success: false,
-			message: 'GET_PROJECT.NOT_FOUND',
+			message: 'PROJECT.UPDATE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'GET_PROJECTS.SUCCESS',
-			data: project,
-		}; 
+			message: 'PROJECT.UPDATE.SUCCESS',
+		};
 	}
 
-	public static async createNew(payload : IProject) : Promise<Response> {
-		const projectId = new ProjectSchema({
-			_id: uuidv4() 
-		}); 
-		payload['_id'] = projectId._id;
-		const result = await ProjectSchema.create(payload);
-		if(!result) return {
-			code: 403,
+	public static async softDeleteProject(projectId: string, userId : string) : Promise<Response> {
+		const project = await ProjectSchema.delete({ _id: projectId }, userId);
+		if(!project) return {
+			code: 409,
 			success: false,
-			message: 'POST_PROJECT.NOT_FOUND',
+			message: 'PROJECT.SOFT_DELETE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'POST_PROJECT.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT.SOFT_DELETE.SUCCESS',
+		};
 	}
 
-	public static async update(payload: IProject, id: string) : Promise<Response> {
-		const result = await ProjectSchema.updateOne({ _id: id }, payload);
-		if(!result) return {
-			code: 403,
+	public static async restoreProject(projectId: string ) : Promise<Response> {
+		const project = await ProjectSchema.restore({ _id: projectId })
+						.updateOne({ _id: projectId }, { $unset: { deletedBy: '', deletedAt: ''} });
+		
+		if(!project) return {
+			code: 409,
 			success: false,
-			message: 'PUT_PROJECT.NOT_FOUND',
+			message: 'PROJECT.RESTORE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'PUT_PROJECT.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT.RESTORE.SUCCESS',
+		};
 	}
 
-	public static async softDelete(id: string, userId: string) : Promise<Response> {
-		console.log(userId);
-		const result = await ProjectSchema.delete({ _id: id }, userId);
+	public static async forceDeleteProject(projectId: string ) : Promise<Response> {
+		const result = await ProjectSchema.deleteOne({ _id: projectId });
 		if(!result) return {
-			code: 403,
+			code: 409,
 			success: false,
-			message: 'SOFTDELETE_PROJECT.NOT_FOUND',
+			message: 'PROJECT.FORCE_DELETE.FAIL'
 		};
+
 		return {
 			code: 200,
 			success: true,
-			message: 'SOFTDELETE_PROJECT.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT.FORCE_DELETE.SUCCESS',
+		};
 	}
 
-	public static async restore(id: string) : Promise<Response> {
-		const result = await ProjectSchema.restore({ _id: id })
-							.updateOne({ _id: id },{ $unset: { deletedBy: '', deletedAt: ''} });
-		if(!result) return {
-			code: 403,
-			success: false,
-			message: 'RESTORE_PROJECT.NOT_FOUND',
-		};
-		return {
-			code: 200,
-			success: true,
-			message: 'RESTORE_PROJECT.SUCCESS',
-			data: result,
-		}; 
-	}
+	public static async getAll(page = 1, limit = 10) : Promise<Response> {
+		const skip : number = limit * (page - 1);
+		const projects = await ProjectSchema.find({})
+								.skip(skip)
+								.limit(limit);
+		const totalLength = await ProjectSchema.countDocuments();
+		const totalPage : number = Math.ceil(totalLength / limit);
 
-	public static async forceDelete(id: string) : Promise<Response> {
-		const result = await ProjectSchema.deleteOne({ _id: id });
-		if(!result) return {
-			code: 403,
+		if(!projects) return {
+			code: 204,
 			success: false,
-			message: 'FORCEDELETE_PROJECT.NOT_FOUND',
+			message: 'PROJECT.GET.FAIL'
 		};
 		return {
 			code: 200,
 			success: true,
-			message: 'FORCEDELETE_PROJECT.SUCCESS',
-			data: result,
-		}; 
+			message: 'PROJECT.GET.SUCCESS',
+			data: projects,
+			pagination: {
+				limit,
+				page,
+				totalPage,
+				totalItem: projects.length || 0
+			}
+		};
+		
 	}
 }
-
-// ngày mai làm phần softDelete, forceDelete, restore

@@ -9,7 +9,6 @@ import mainRouter from './route/index.route';
 
 const APP : Express = express();
 
-
 APP.use(morgan('tiny'));
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));

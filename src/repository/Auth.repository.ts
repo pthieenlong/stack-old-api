@@ -52,8 +52,6 @@ export default class AuthRepository {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     public static async login(req: CustomRequest) {
         const { username, password } = req.body;
-        console.log(username);
-        console.log(password);
         if(!username || !password) return {
             code: 409,
             success: false,
