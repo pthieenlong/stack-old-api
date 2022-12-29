@@ -2,7 +2,7 @@ import { User } from '../model/User.model';
 import GroupSchema from '../database/schema/Group.schema';
 import Group from '../model/Group.model';
 import Response from '../type/response/Response';
-import { GroupRole } from 'type/enum/EUser';
+import { GroupRole } from '../type/enum/EUser';
 
 export default class GroupRepository {
     public static async getGroupByID(id: string): Promise<Response> {
