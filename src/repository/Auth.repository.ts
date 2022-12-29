@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { testSendMail } from '../util/SendMail';
 import { Active, Role } from '../type/enum/EUser';
-import { generateRandomNumber } from 'util/Ultils';
+import { generateRandomNumber } from '../util/Ultils';
 export default class AuthRepository {
     public static async register(req: CustomRequest): Promise<Response> {
         const { username, password, correctPassword, email, phone } = req.body;
