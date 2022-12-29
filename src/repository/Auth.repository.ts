@@ -4,6 +4,9 @@ import Response from '../type/response/Response';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { testSendMail } from '../util/SendMail';
+import { Active, Role } from '../type/enum/EUser';
+import { generateRandomNumber } from '../util/Ultils';
 export default class AuthRepository {
     public static async register(req: CustomRequest): Promise<Response> {
         const { username, password, correctPassword, email, phone } = req.body;
@@ -11,20 +14,20 @@ export default class AuthRepository {
             return {
                 code: 409,
                 success: false,
-                message: 'REGISTER_USER.REQUIRED',
+                message: 'USER.REGISTER.REQUIRED',
             };
         }
 
         if(correctPassword != password) return {
             code: 409,
             success: false,
-            message: 'REGISTER_USER.PASSWORD_INCORRECT',
+            message: 'USER.REGISTER.PASSWORD_INCORRECT',
         };
         const isExists = await UserSchema.find({ username });
         if(!isExists != false) return {
             code: 409,
             success: false,
-            message: 'REGISTER_USER.EXIST',
+            message: 'USER.REGISTER.EXIST',
         };
         const hashedPassword = bcrypt.hashSync(password, 10);
         const user = new UserSchema({
@@ -32,21 +35,21 @@ export default class AuthRepository {
             username,
             password: hashedPassword,
             email,
-            phone
+            phone,
+            roles: [ Role.USER ],
+            active: Active.UNACTIVE,
         });
         const isSuccess = await user.save();
-        //Gửi mail cho người ta
-
         if(isSuccess) {
             return {
                 code: 200,
                 success: true,
-                message: 'REGISTER_USER.SUCCESS',
+                message: 'USER.REGISTER.SUCCESS',
             };
         }  else return {
             code: 409,
 			success: false,
-			message: 'REGISTER_USER.FAIL',
+			message: 'USER.REGISTER.FAIL',
         };
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -103,4 +106,35 @@ export default class AuthRepository {
             };
         };
     }
+    public static async sendVerifyTokenMail(req: CustomRequest): Promise<Response | void> {
+        const { email } = req.body;
+        if(!email) return {
+            code: 400,
+            success: true,
+            message: 'MAIL.SEND.FAIL',
+        };
+        const randomKey = generateRandomNumber();
+        const token = jwt.sign({},
+            process.env.SECRET_EMAIL_TOKEN as string,
+            { expiresIn: '5m'}
+        );
+        try {
+            const result = await testSendMail(email);
+            return {
+                code: result ? 200 : 409,
+                success: result ? true : false,
+                message: result ? 'MAIL.SEND.SUCCESS' : 'MAIL.SEND.FAIL',
+            };
+        } catch( error) {
+            return {
+                code: 409,
+                success: true,
+                message: 'MAIL.SEND.FAIL',
+            };
+        }
+    }
+
+    // public static async verifyAccount():Promise<void> {
+        
+    // }
 }
