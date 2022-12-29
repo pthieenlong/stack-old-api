@@ -31,16 +31,6 @@
   },
   "linkDemo": "http://localhost:3000/linkdemo",
   "deleted": false,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1672221316303"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1672221316303"
-    }
-  },
   "__v": 0
 },{
   "_id": "c8344084-ae4d-4a4d-8b0a-0ca8787d7cd6",
@@ -75,16 +65,6 @@
   },
   "linkDemo": "http://localhost:3000/linkdemo",
   "deleted": false,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1672221368079"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1672221368079"
-    }
-  },
   "__v": 0
 },{
   "_id": "664e7cd9-3c0b-4b68-b7df-d975e029e6a5",
@@ -119,15 +99,5 @@
   },
   "linkDemo": "http://localhost:3000/linkdemo",
   "deleted": false,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1672221378309"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1672221378309"
-    }
-  },
   "__v": 0
 }]

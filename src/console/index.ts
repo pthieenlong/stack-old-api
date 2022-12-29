@@ -7,7 +7,7 @@ import ProjectTypeConsole from '../console/ProjectType.console';
 require('dotenv').config();
 const createUserCollection = async ():Promise<void> => {
     try {
-        Promise.all([
+        await Promise.all([
             UserConsole.create(),
             ProjectConsole.create(),
             ProjectTypeConsole.create()

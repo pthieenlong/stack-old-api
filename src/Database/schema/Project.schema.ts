@@ -12,13 +12,13 @@ const ProjectSchema = new Schema<IProject>(
             _id: { type: String, required: true },
             groupName: { type: String, required: true }
         },
-        rating: { type: Number, maxlength: 100 },
-        price: { type: Number, required: true },
+        rating: { type: Number, maxlength: 100, default: 0 },
+        price: { type: Number, default: 0 },
         sale: { type: Number, default: 0 },
 		savingLocale: {
-            _id: { type: String, required: true, default: uuidv4() },
-            link: { type: String, required: true },
-            status: { type: Number, required: true, default: SavingLocaleStatus.AVAILABLE },
+            _id: { type: String, default: uuidv4() },
+            link: { type: String, default: '' },
+            status: { type: Number, default: SavingLocaleStatus.AVAILABLE },
         },
         project_types: [
             {
@@ -26,17 +26,17 @@ const ProjectSchema = new Schema<IProject>(
                 name: { type: String, required: true },
             }
         ],
-        status: { type: Number, required: true, default: ProjectStatus.AVAILABLE },
+        status: { type: Number, default: ProjectStatus.AVAILABLE },
         thumbnail: { type: String, required: true },
         images: [
             { type: String, required: true }
         ],
         description: { 
-            compatibleBrowsers: { type: String, required: true },
+            compatibleBrowsers: { type: String, default: '' },
             highResolution: { type: Boolean, default: true },
-            themeForestFilesIncluded: { type: String, required: true }
+            themeForestFilesIncluded: { type: String, default: '' }
         },
-        linkDemo: { type: String, required: true }
+        linkDemo: { type: String, default: ''}
     },
 	{
 		_id: false,

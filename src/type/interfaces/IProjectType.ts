@@ -1,6 +1,5 @@
-import { SoftDeleteDocument } from 'mongoose-delete';
 
-interface IProjectType extends SoftDeleteDocument  {
+interface IProjectType  {
     _id: string;
     name: string;
 }
