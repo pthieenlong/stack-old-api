@@ -4,7 +4,6 @@ import UserRepository from '../repository/User.repository';
 
 export default class UserController {
 	public static async getByID(req: CustomRequest, res: Response):Promise<Response> {
-		
 		try {
 			const result = await UserRepository.getByID(req.userID as string);
 			return res.json(result);
