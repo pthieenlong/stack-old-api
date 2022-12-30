@@ -1,95 +1,103 @@
-[
-	{
-		"_id": "39ecaff7-c137-4870-af6d-f62cced5a3b8",
-		"groupOwner": {
-			"_id": "custom id groupOwner",
-			"groupName": "cusom groupName"
-		},
-		"rating": 10,
-		"price": 200000,
-		"sale": 30,
-		"savingLocale": {
-			"_id": "custom savingLocale id",
-			"link": "http://localhost:3000/abcx",
-			"status": 1
-		},
-		"project_types": [
-			{
-				"_id": "custom project_type id",
-				"name": "custom project_type name"
-			}
-		],
-		"status": 2,
-		"thumbnail": "http://localhost:3000/thumbnail",
-		"images": ["http://localhost:3000/image/1", "http://localhost:3000/image/2"],
-		"description": {
-			"compatibleBrowsers": "google",
-			"highResolution": true,
-			"themeForestFilesIncluded": "theme Foresst Files Includes"
-		},
-		"linkDemo": "http://localhost:3000/linkdemo",
-		"deleted": false
-	},
-	{
-		"_id": "c8344084-ae4d-4a4d-8b0a-0ca8787d7cd6",
-		"groupOwner": {
-			"_id": "custom id groupOwner 2 ",
-			"groupName": "cusom groupName 2"
-		},
-		"rating": 3,
-		"price": 233300000,
-		"sale": 40,
-		"savingLocale": {
-			"_id": "custom savingLocale id",
-			"link": "http://localhost:3000/abcx",
-			"status": 0
-		},
-		"project_types": [
-			{
-				"_id": "custom project_type id",
-				"name": "custom project_type name"
-			}
-		],
-		"status": 2,
-		"thumbnail": "http://localhost:3000/thumbnail",
-		"images": ["http://localhost:3000/image/1", "http://localhost:3000/image/2"],
-		"description": {
-			"compatibleBrowsers": "google",
-			"highResolution": true,
-			"themeForestFilesIncluded": "theme Foresst Files Includes"
-		},
-		"linkDemo": "http://localhost:3000/linkdemo",
-		"deleted": false
-	},
-	{
-		"_id": "664e7cd9-3c0b-4b68-b7df-d975e029e6a5",
-		"groupOwner": {
-			"_id": "custom id groupOwner 3 ",
-			"groupName": "cusom groupName 3"
-		},
-		"rating": 3,
-		"price": 233300000,
-		"sale": 40,
-		"savingLocale": {
-			"_id": "custom savingLocale id",
-			"link": "http://localhost:3000/abcx",
-			"status": 0
-		},
-		"project_types": [
-			{
-				"_id": "custom project_type id",
-				"name": "custom project_type name"
-			}
-		],
-		"status": 2,
-		"thumbnail": "http://localhost:3000/thumbnail",
-		"images": ["http://localhost:3000/image/1", "http://localhost:3000/image/2"],
-		"description": {
-			"compatibleBrowsers": "google",
-			"highResolution": true,
-			"themeForestFilesIncluded": "theme Foresst Files Includes"
-		},
-		"linkDemo": "http://localhost:3000/linkdemo",
-		"deleted": false
-	}
-]
+[{
+  "_id": "39ecaff7-c137-4870-af6d-f62cced5a3b8",
+  "groupOwner": {
+    "_id": "custom id groupOwner",
+    "groupName": "cusom groupName"
+  },
+  "rating": 10,
+  "price": 200000,
+  "sale": 30,
+  "savingLocale": {
+    "_id": "custom savingLocale id",
+    "link": "http://localhost:3000/abcx",
+    "status": 1
+  },
+  "project_types": [
+    {
+      "_id": "custom project_type id",
+      "name": "custom project_type name"
+    }
+  ],
+  "status": 2,
+  "thumbnail": "http://localhost:3000/thumbnail",
+  "images": [
+    "http://localhost:3000/image/1",
+    "http://localhost:3000/image/2"
+  ],
+  "description": {
+    "compatibleBrowsers": "google",
+    "highResolution": true,
+    "themeForestFilesIncluded": "theme Foresst Files Includes"
+  },
+  "linkDemo": "http://localhost:3000/linkdemo",
+  "deleted": false,
+  "__v": 0
+},{
+  "_id": "c8344084-ae4d-4a4d-8b0a-0ca8787d7cd6",
+  "groupOwner": {
+    "_id": "custom id groupOwner 2 ",
+    "groupName": "cusom groupName 2"
+  },
+  "rating": 3,
+  "price": 233300000,
+  "sale": 40,
+  "savingLocale": {
+    "_id": "custom savingLocale id",
+    "link": "http://localhost:3000/abcx",
+    "status": 0
+  },
+  "project_types": [
+    {
+      "_id": "custom project_type id",
+      "name": "custom project_type name"
+    }
+  ],
+  "status": 2,
+  "thumbnail": "http://localhost:3000/thumbnail",
+  "images": [
+    "http://localhost:3000/image/1",
+    "http://localhost:3000/image/2"
+  ],
+  "description": {
+    "compatibleBrowsers": "google",
+    "highResolution": true,
+    "themeForestFilesIncluded": "theme Foresst Files Includes"
+  },
+  "linkDemo": "http://localhost:3000/linkdemo",
+  "deleted": false,
+  "__v": 0
+},{
+  "_id": "664e7cd9-3c0b-4b68-b7df-d975e029e6a5",
+  "groupOwner": {
+    "_id": "custom id groupOwner 3 ",
+    "groupName": "cusom groupName 3"
+  },
+  "rating": 3,
+  "price": 233300000,
+  "sale": 40,
+  "savingLocale": {
+    "_id": "custom savingLocale id",
+    "link": "http://localhost:3000/abcx",
+    "status": 0
+  },
+  "project_types": [
+    {
+      "_id": "custom project_type id",
+      "name": "custom project_type name"
+    }
+  ],
+  "status": 2,
+  "thumbnail": "http://localhost:3000/thumbnail",
+  "images": [
+    "http://localhost:3000/image/1",
+    "http://localhost:3000/image/2"
+  ],
+  "description": {
+    "compatibleBrowsers": "google",
+    "highResolution": true,
+    "themeForestFilesIncluded": "theme Foresst Files Includes"
+  },
+  "linkDemo": "http://localhost:3000/linkdemo",
+  "deleted": false,
+  "__v": 0
+}]

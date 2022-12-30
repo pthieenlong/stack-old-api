@@ -1,27 +1,26 @@
-[
-	{
-		"_id": "a7efd7db-8bf4-4f2c-a3b7-39476d1bdd25",
-		"name": "Project Type cumtom 1",
-		"deleted": false
-	},
-	{
-		"_id": "597a428b-6353-4a4c-812c-96e056126715",
-		"name": "Project Type cumtom 2",
-		"deleted": false
-	},
-	{
-		"_id": "7b019b33-1fc4-4e5e-b03c-91efd3b27495",
-		"name": "Project Type cumtom 3",
-		"deleted": false
-	},
-	{
-		"_id": "2792de2d-fa1c-4f19-8e98-f8813d317950",
-		"name": "Project Type cumtom 4",
-		"deleted": false
-	},
-	{
-		"_id": "2099b03c-58db-4903-98f1-ff60aa7a9f5e",
-		"name": "Project Type cumtom 5",
-		"deleted": false
-	}
-]
+[{
+  "_id": "a7efd7db-8bf4-4f2c-a3b7-39476d1bdd25",
+  "name": "Project Type cumtom 1",
+  "deleted": false,
+  "__v": 0
+},{
+  "_id": "597a428b-6353-4a4c-812c-96e056126715",
+  "name": "Project Type cumtom 2",
+  "deleted": false,
+  "__v": 0
+},{
+  "_id": "7b019b33-1fc4-4e5e-b03c-91efd3b27495",
+  "name": "Project Type cumtom 3",
+  "deleted": false,
+  "__v": 0
+},{
+  "_id": "2792de2d-fa1c-4f19-8e98-f8813d317950",
+  "name": "Project Type cumtom 4",
+  "deleted": false,
+  "__v": 0
+},{
+  "_id": "2099b03c-58db-4903-98f1-ff60aa7a9f5e",
+  "name": "Project Type cumtom 5",
+  "deleted": false,
+  "__v": 0
+}]

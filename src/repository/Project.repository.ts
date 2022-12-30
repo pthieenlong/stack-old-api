@@ -36,7 +36,8 @@ export default class ProjectRepository{
         };
     }
 
-	public static async updateProject(projectId: string, projectUpdateProperties: Project) : Promise<Response> {
+	public static async updateProject(projectId: string, projectUpdateProperties: Partial<Project>) : Promise<Response> {
+		console.log(projectUpdateProperties);
 		const project = await ProjectSchema.updateOne({ _id: projectId }, projectUpdateProperties);
 		
 		if(!project) return {

@@ -31,7 +31,7 @@ export default class ProjectTypeController {
             });
             
 			const projectTypeProperties = { ...req.body };
-            const _id =  uuidv4();
+            const _id = uuidv4();
             const projectType : ProjectType = new ProjectType({ _id , ...projectTypeProperties});
 
             if(!projectType) return res.json({
