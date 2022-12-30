@@ -12,7 +12,7 @@ export default class ProjectTypeConsole {
             const filePath = path.join(__dirname, '../', 'database', 'json', 'projecttypes.json');
             const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
             const projectTypeData = JSON.parse(fileContent);
-            await ProjectTypeSchema.db?.dropCollection('project_types');
+            await ProjectTypeSchema.db?.dropCollection('projecttypes');
             const result = await ProjectTypeSchema.insertMany(projectTypeData);
             return result ? true : false;
         } catch (error) {

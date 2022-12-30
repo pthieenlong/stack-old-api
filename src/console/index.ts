@@ -5,21 +5,21 @@ import ProjectTypeConsole from '../console/ProjectType.console';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
-const createUserCollection = async ():Promise<void> => {
-    if(await UserConsole.create())
-        console.log('create user collection success');
-    exit();
+const createCollections = async function(): Promise<void> {
+    try {
+        const promises = Promise.all([
+            UserConsole.create(),
+            ProjectConsole.create(),
+            ProjectTypeConsole.create()
+        ]);
+        const result = (await promises).every(val => val === true);
+        if(result)
+            console.log('create collections success');
+        else console.log('create collections fail');
+        
+        exit();
+    } catch(error) {
+        console.error(error);
+    }
 };
-const createProjectTypeCollection = async ():Promise<void> => {
-    if(await ProjectTypeConsole.create())
-        console.log('create project type collection success');
-    exit();
-};
-const createProjectCollection = async ():Promise<void> => {
-    if(await ProjectConsole.create())
-        console.log('create project collection success');
-    exit();
-};
-createUserCollection();
-createProjectCollection();
-createProjectTypeCollection();
+createCollections();
