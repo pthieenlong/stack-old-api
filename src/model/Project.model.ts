@@ -7,15 +7,15 @@ export default class Project {
 		_id: string;
 		groupName: string;
 	};
-	public rating: number;
-	public price: number;
+	public rating?: number;
+	public price?: number;
 	public sale?: number;
 	public savingLocale: {
 		_id: string;
 		link: string;
 		status: SavingLocaleStatus;
 	};
-	public project_types?: [
+	public project_types: [
 		project_type : {
 			_id: string;
 			name: string;

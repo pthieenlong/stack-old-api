@@ -5,7 +5,8 @@ import { abs } from 'mathjs';
 import CustomRequest from '../type/CustomRequest';
 import Project from '../model/Project.model';
 import ProjectRepository from '../repository/Project.repository';
-import { ProjectStatus } from '../type/enum/EProject';
+import { ProjectInput, ProjectUpdateInput } from '../type/input/Project.input';
+import ValidateInput from '../helper/ValidateInput';
 
 export default class ProjectController {
 	public static async getProjectByID(req: CustomRequest, res: Response): Promise<Response | void> {
@@ -31,9 +32,9 @@ export default class ProjectController {
                 message: 'PROJECT.CREATE.FAIL'
             });
             
-			const projectProperties = { ...req.body };
+			const projectInput = new ProjectInput(req.body);
             const _id =  uuidv4();
-            const project : Project = new Project({ _id , ...projectProperties , status: ProjectStatus.PENDING });
+            const project : Project = new Project({ _id , ...projectInput });
 
             if(!project) return res.json({
                 code: 400,
@@ -50,11 +51,15 @@ export default class ProjectController {
 
 	public static async updateProject(req: CustomRequest, res: Response): Promise<Response | void> {
         try {
-            const projectUpdateInput = { ...req.body };
+            const projectUpdateInput = new ProjectUpdateInput(req.body);
+            const validate = await ValidateInput(req, projectUpdateInput, 'BAD_REQUEST', true);
+            
+            console.log(validate);
+            if (validate !== null) {
+                return res.json(validate);
+            }
 			const { id } = req.params;
             const result = await ProjectRepository.updateProject(id, projectUpdateInput);
-            console.log(`result: ${result}`);
-            
             return res.json(result);
             
         } catch(error) {

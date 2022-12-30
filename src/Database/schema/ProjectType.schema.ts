@@ -18,7 +18,7 @@ const ProjectTypeSchema = new Schema<TypeProject>(
 
 // Add Plugins to the Schema
 ProjectTypeSchema.plugin(mongooseDelete, { deletedAt: true, deletedBy: true, deletedByType: String });
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const model = mongoose.model<IProjectType, SoftDeleteModel<TypeProject>>('ProjectType', ProjectTypeSchema);
 
 export default model;

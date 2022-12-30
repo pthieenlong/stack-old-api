@@ -7,7 +7,7 @@ import IProject from '../../type/interfaces/IProject';
 
 const ProjectSchema = new Schema<IProject>(
 	{
-		_id: { type: String, required: true },
+		_id: { type: String, required: true, unique: true },
         groupOwner: { 
             _id: { type: String, required: true },
             groupName: { type: String, required: true }
@@ -17,7 +17,7 @@ const ProjectSchema = new Schema<IProject>(
         sale: { type: Number, default: 0 },
 		savingLocale: {
             _id: { type: String, default: uuidv4() },
-            link: { type: String, default: '' },
+            link: { type: String, required: true },
             status: { type: Number, default: SavingLocaleStatus.AVAILABLE },
         },
         project_types: [
@@ -29,7 +29,7 @@ const ProjectSchema = new Schema<IProject>(
         status: { type: Number, default: ProjectStatus.AVAILABLE },
         thumbnail: { type: String, required: true },
         images: [
-            { type: String, required: true }
+            { type: String, default: ''}
         ],
         description: { 
             compatibleBrowsers: { type: String, default: '' },

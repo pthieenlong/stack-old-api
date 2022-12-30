@@ -11,9 +11,9 @@ interface IProject extends SoftDeleteDocument {
 		_id: string;
 		groupName: string;
 	};
-	rating : number;
-	price: number;
-	sale : number;
+	rating?: number;
+	price?: number;
+	sale?: number;
 	savingLocale: {
 		_id: string;
 		link: string;
@@ -25,15 +25,15 @@ interface IProject extends SoftDeleteDocument {
 			name: string;
 		}
 	];
-	status: ProjectStatus;
+	status?: ProjectStatus;
 	thumbnail: string;
-    images: string[];
-    description: {
+    images?: string[];
+    description?: {
 		compatibleBrowsers: string;
 		highResolution: boolean;
 		themeForestFilesIncluded: string;
 	};
-    linkDemo: string;
+    linkDemo?: string;
 }
 
 export default IProject;
