@@ -1,11 +1,13 @@
 import mongoose, { Schema} from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import mongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
+import mongooseDelete, { SoftDeleteModel, SoftDeleteDocument } from 'mongoose-delete';
 
 import { ProjectStatus, SavingLocaleStatus } from '../../type/enum/EProject';
 import IProject from '../../type/interfaces/IProject';
 
-const ProjectSchema = new Schema<IProject>(
+type ProjectType = IProject & SoftDeleteDocument;
+
+const ProjectSchema = new Schema<ProjectType>(
 	{
 		_id: { type: String, required: true, unique: true },
         groupOwner: { 
@@ -46,7 +48,7 @@ const ProjectSchema = new Schema<IProject>(
 
 // Add Plugins to the Schema
 ProjectSchema.plugin(mongooseDelete, { deletedAt: true, deletedBy: true, deletedByType: String });
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const model = mongoose.model<IProject, SoftDeleteModel<IProject>>('Project', ProjectSchema);
+
+const model = mongoose.model<ProjectType, SoftDeleteModel<ProjectType>>('Project', ProjectSchema);
 
 export default model;

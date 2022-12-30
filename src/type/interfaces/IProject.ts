@@ -1,11 +1,9 @@
-import { SoftDeleteDocument } from 'mongoose-delete';
-
 import { ProjectStatus, SavingLocaleStatus } from 'type/enum/EProject';
 export type ProjectType = {
     name: string;
 }
 
-interface IProject extends SoftDeleteDocument {
+interface IProject {
 	_id: string;
 	groupOwner: {
 		_id: string;
