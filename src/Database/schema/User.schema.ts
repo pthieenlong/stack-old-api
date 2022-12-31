@@ -18,8 +18,15 @@ const userSchema = new Schema<IUser>(
 		refreshToken: {
 			type: String,
 		},
-		active: {
-			default: Active.UNACTIVE,
+		verify: {
+			active: {
+				type: Active,
+				default: Active.UNACTIVE
+			},
+			code: {
+				type: String,
+				default: null
+			}
 		},
 		email: {
 			type: String,

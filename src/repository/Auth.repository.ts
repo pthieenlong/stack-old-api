@@ -37,7 +37,10 @@ export default class AuthRepository {
             email,
             phone,
             roles: [ Role.USER ],
-            active: Active.UNACTIVE,
+            verify: {
+                code: null,
+                active: Active.UNACTIVE 
+            },
         });
         const isSuccess = await user.save();
         if(isSuccess) {
@@ -113,8 +116,16 @@ export default class AuthRepository {
             success: true,
             message: 'MAIL.SEND.FAIL',
         };
-        const randomKey = generateRandomNumber();
-        const token = jwt.sign({},
+        const user = await UserSchema.findOne({ email });
+        if(!user) return {
+            code: 404,
+            success: false,
+            message: 'USER.GET.FAIL',
+        };
+        const randomKey = generateRandomNumber().toString();
+        user.verify.code = randomKey;
+        await user.save();
+        const token = jwt.sign({ email },
             process.env.SECRET_EMAIL_TOKEN as string,
             { expiresIn: '5m'}
         );
@@ -133,8 +144,30 @@ export default class AuthRepository {
             };
         }
     }
-
-    // public static async verifyAccount():Promise<void> {
-        
-    // }
+    public static async verifyAccount(req: CustomRequest):Promise<Response> {
+        const { OTP } = req.body;
+        const user = await UserSchema.findOne({ email: req.email });
+        if(!user) return {
+            code: 404,
+            success: false,
+            message: 'USER.GET.FAIL'
+        };
+        const compareCode = OTP == user.verify.code ? true : false;
+        if(compareCode) {
+            user.verify = {
+                code: '',
+                active: Active.ACTIVE
+            };
+            const result = await user.save();
+            return {
+                code: 200,
+                success: true,
+                message: 'USER.VERIFY.SUCCESS'
+            };
+        } else return {
+            code: 409,
+            success: true,
+            message: 'USER.VERIFY.FAIL'
+        };
+    }
 }

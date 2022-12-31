@@ -1,6 +1,8 @@
 import AuthRepository from '../repository/Auth.repository';
 import CustomRequest from '../type/CustomRequest';
 import { Response as ExpressResponse } from 'express';
+import { VerifyAccount } from '../type/input/Auth.input';
+import ValidateInput from 'helper/ValidateInput';
 export default class AuthController {
     public static async register(req: CustomRequest, res: ExpressResponse): Promise<ExpressResponse> {
         try {
@@ -32,6 +34,18 @@ export default class AuthController {
             return res.json({
                 error
             });
+        }
+    }
+    public static async verify(req: CustomRequest, res: ExpressResponse): Promise<ExpressResponse> {
+        try {
+            const verifyInput = new VerifyAccount({ code: req.body.code });
+            const validate = await ValidateInput(req, verifyInput, 'BAD_REQUEST');
+            if(validate !== null) 
+                return res.json(validate);
+            const result = await AuthRepository.verifyAccount(req);
+            return res.json(result);
+        } catch(error) {
+            return res.json({ error });
         }
     }
 }

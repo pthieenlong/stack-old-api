@@ -6,7 +6,10 @@ export class User {
 	public password: string;
 	public email: string;
 	public phone: string;
-	public active: Active = Active.UNACTIVE;
+	public verify = {
+		code: null,
+		active: Active.UNACTIVE,
+	};
 	public roles: Role[] = [Role.USER];
 	public token: string;
 
@@ -16,7 +19,7 @@ export class User {
 		this.password = user.password;
 		this.email = user.email;
 		this.phone = user.phone;
-		this.active = user.active;
+		this.verify = user.verify;
 		this.token = user.token;
 		this.roles = user.roles;
 	}

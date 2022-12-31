@@ -8,7 +8,10 @@ interface IUser {
 	password: string;
 	email: string;
 	phone: string;
-	active: Active;
+	verify: {
+		code: string;
+		active: Active;
+	};
 	token: string;
 }
 

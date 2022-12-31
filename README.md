@@ -21,6 +21,13 @@ or
     DATABASE_URL = your_database_url
     SECRET_ACCESS_TOKEN = your_access_token
     SECRET_REFRESH_TOKEN = your_refresh_token
+    SECRET_EMAIL_TOKEN = your_email_token
+
+    MAIL_SERVICE = Gmail
+    MAIL_HOST = smtp.gmail.com
+    MAIL_ACCOUNT = longpt.demo@gmail.com
+    MAIL_PASSWORD = ysycgxbwphejcqka
+
 ```
 
 - Generate token by command

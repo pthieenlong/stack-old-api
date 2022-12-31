@@ -38,4 +38,23 @@ export default class UserRepository {
 			data
 		}; 
     }
+	public static async getUserByEmail(email: string):Promise<Response> {
+		const user = await UserSchema.findOne({ email });
+		if(!user) return {
+			code: 403,
+			success: false,
+			message: 'USER.GET.FAIL',
+		};
+		const data = {
+			username: user.username,
+			email: user.email,
+			phone: user.phone,
+		};
+		return {
+			code: 200,
+			success: true,
+			message: 'USER.GET.SUCCESS',
+			data,
+		}; 
+	}
 }
