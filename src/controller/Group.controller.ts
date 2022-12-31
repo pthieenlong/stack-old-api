@@ -43,14 +43,9 @@ export default class GroupController {
             const _id = uuidv4();
             const group = new Group({_id, ...groupInput, status: GroupStatus.UNACTIVE});
 
-            if(!group) return res.json({
-                code: 400,
-                success: false,
-                message: 'GROUP.CREATE.FAIL'
-            });
-            const newGroup = await GroupRepository.createGroup(req.userID, group);
+            const result = await GroupRepository.createGroup(req.userID, group);
 
-            return res.json(newGroup);
+            return res.json(result);
         } catch(error) {
             console.error(error);
         }

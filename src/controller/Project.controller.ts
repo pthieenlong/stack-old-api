@@ -29,7 +29,7 @@ export default class ProjectController {
             
 			const projectInput = new ProjectInput(req.body);
             const _id =  uuidv4();
-            const project : Project = new Project({ _id , ...projectInput });
+            const project = new Project({ _id , ...projectInput });
 
             if(!project) return res.json({
                 code: 400,
@@ -105,7 +105,7 @@ export default class ProjectController {
 
 	public static async getAll(req: CustomRequest, res: Response): Promise<Response | void> {
         try {
-            const { limit , page } = req.query;
+            const { limit = 10, page = 1 } = req.query;
             const result = await ProjectRepository.getAll(abs(parseInt(page as string)), abs(parseInt(limit as string)));
             return res.json(result);
             

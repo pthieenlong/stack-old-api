@@ -9,7 +9,7 @@ type ProjectType = IProject & SoftDeleteDocument;
 
 const ProjectSchema = new Schema<ProjectType>(
 	{
-		_id: { type: String, required: true, unique: true },
+		_id: { type: String, required: true },
         groupOwner: { 
             _id: { type: String, required: true },
             groupName: { type: String, required: true }
