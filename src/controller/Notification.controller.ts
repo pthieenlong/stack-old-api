@@ -86,13 +86,11 @@ export default class NotifyController {
     public static async deleteNotify(req: CustomRequest, res: Response): Promise<Response | void> {
         try {
             const { id } = req.params;
-            if (!id) {
-                return res.json({
-                    code: 400,
-                    success: false,
-                    message: 'NOTIFICATION.DELETE.FAIL'
-                });
-            }
+            if (!id) return res.json({
+                code: 400,
+                success: false,
+                message: 'NOTIFICATION.DELETE.FAIL'
+            });
 
             const result = await NotificationRepository.deleteNotify(id);
             return res.json(result);
@@ -111,17 +109,21 @@ export default class NotifyController {
                     message: 'NOTIFICATION.PUT_READ.FAIL'
                 });
             }
-            const { id } = req.params;
-            if (!id) {
-                return res.json({
-                    code: 400,
-                    success: false,
-                    message: 'NOTIFICATION.PUT_READ.FAIL'
-                });
-            }
+            const { id }  = req.params;
+            
+            if (!id) return res.json({
+                code: 400,
+                success: false,
+                message: 'NOTIFICATION.PUT_READ.FAIL'
+            });
+            const regexId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+            if (!regexId.test(id)) return res.json({
+                code: 400,
+                success: false,
+                message: 'NOTIFICATION.PUT_READ.FAIL'
+            });
             const userId : string = req.userID;
             const result = await NotificationRepository.actionSeenNotify(id, userId);
-            console.log(result);
             res.json(result);
         } catch (error) {
             console.log(error);
