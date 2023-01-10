@@ -1,0 +1,37 @@
+[{
+  "_id": "1bdcd6c9-47e0-406a-b782-d85d6a742864",
+  "user": {
+    "_id": "8dc1895a-b3de-4c2a-975d-eb1b079bb227",
+    "username": "longpt"
+  },
+  "sender": {
+    "_id": "8dc1895a-b3de-4c2a-975d-eb1b079bb227",
+    "username": "longpt"
+  },
+  "type": "project",
+  "data": {
+    "message": "Bạn thật là hài hước 312312321312321",
+    "projectId": "id custom order"
+  },
+  "status": 1,
+  "read": 1,
+  "__v": 0
+},{
+  "_id": "812c09b0-ad7a-4624-b78b-dfc51f2220a9",
+  "user": {
+    "_id": "8dc1895a-b3de-4c2a-975d-eb1b079bb227",
+    "username": "longpt"
+  },
+  "sender": {
+    "_id": "8dc1895a-b3de-4c2a-975d-eb1b079bb227",
+    "username": "longpt"
+  },
+  "type": "project",
+  "data": {
+    "message": "Bạn thật là hài hước",
+    "projectId": "id custom order"
+  },
+  "status": 1,
+  "read": 1,
+  "__v": 0
+}]
